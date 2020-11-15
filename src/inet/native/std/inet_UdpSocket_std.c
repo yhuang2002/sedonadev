@@ -349,7 +349,7 @@ Cell inet_UdpSocket_receive(SedonaVM* vm, Cell* params)
   void* receiveIpAddr;
 
   struct sockaddr_storage addr;
-  int addrLen = sizeof(addr);
+  socklen_t addrLen = sizeof(addr);
 
   memset(&addr, 0, sizeof(addr));
 

@@ -184,7 +184,7 @@ Cell sys_FileStore_doOpen(SedonaVM* vm, Cell* params)
     default:  return nullCell;
   }
 
-
+#if 0   /* esp-idf does not support directory, filename may be const and store on flash */
   //
   // If opening for writing: Create directories if they don't exist
   //
@@ -217,6 +217,7 @@ Cell sys_FileStore_doOpen(SedonaVM* vm, Cell* params)
       if (sep==NULL) sep = strchr(nxtdir, '\\');
     }
   }
+#endif
 
   result.aval = fopen(name, fopenMode);
 

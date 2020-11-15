@@ -120,7 +120,7 @@ Cell inet_TcpSocket_finishConnect(SedonaVM* vm, Cell* params)
   //  was not made.  Check the socket error status.
 #ifndef _WIN32
   {
-    int arglen = sizeof(int);
+    socklen_t arglen = sizeof(socklen_t);
     int sock_err = 0;
 #ifdef NETOS_GNU_TOOLS
     getsockopt(sock, SOL_SOCKET, SO_ERROR, (char*)&sock_err, &arglen);
