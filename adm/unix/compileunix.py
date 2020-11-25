@@ -25,9 +25,9 @@ def gcc(exeFile, srcFiles, includes, libs, defs):
   # standard includes                                                                   
 
 #Titus
-#  cmd = "gcc"
+  cmd = "gcc"
 
-  cmd = "arm-linux-gnueabihf-gcc"
+#  cmd = "arm-linux-gnueabihf-gcc"
 
   for include in includes:
     cmd += " -I\"" + include + "\""

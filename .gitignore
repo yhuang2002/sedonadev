@@ -1,6 +1,6 @@
 *.pyc
 manifests/
 temp
-lib
+lib/*
 kits
 
