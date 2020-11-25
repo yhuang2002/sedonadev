@@ -1,0 +1,121 @@
+**
+** AI models an analog input point
+**
+//@niagaraIcon="module://icons/x16/io.png"
+class AI
+  extends Component    
+{
+
+  //////////////////////////////////////////////////////////////////////////
+  // Properties
+  //////////////////////////////////////////////////////////////////////////
+
+  ** Which physical EspIo this corresponds to
+  @min=0
+  @max=11
+  @defaultOnClone
+  @config property int  channel = -1           // -1 is uninitialized/invalid
+
+  @min=0
+  @max=5
+  @range="Input10V,Binary,Thm10KT2,Thm10KT3,Thm20K,Resistance"
+  @config property int ChnType
+
+  ** Last known value of the hardware input
+  @readonly @allowNull property float outF  = null
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // Component methods
+  //////////////////////////////////////////////////////////////////////////
+
+  **
+  ** Initialize the component
+  **
+  virtual override void start()
+  {
+
+    // Don't touch hardware until input value is valid
+    if ( !Sys.app.isSteadyState() ) 
+      return                     
+
+    // If init succeeds, set isInit true
+    isInit = init( channel )
+
+    return
+  }
+
+  virtual override void stop()
+  {
+	 EspIo.doFreeCh(channel)
+  }
+
+  **
+  ** Read the EspIo and update value of outF.
+  **
+  virtual override void execute()
+  {
+    // If not yet initialized, do that first
+    if (!isInit) 
+    {
+      start()
+      return
+    }
+
+    float rc = read()
+
+    return
+  }
+
+
+  **
+  ** Respond as needed to changes in property values.
+  ** 
+  override void changed(Slot slot)
+  {
+    super.changed(slot)
+
+    // Don't respond to prop changes while app is loading
+    if (!Sys.app.isRunning()) return
+
+    // If EspIo# changes, re-init the EspIo
+    if (slot == AI.channel)
+      //channel := EspIo.doAllocateCh(channel, id)
+      isInit = false
+  }
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // Public EspIo methods
+  //////////////////////////////////////////////////////////////////////////
+
+  **
+  ** Initialize the EspIo input based on arg values.  Sets config properties to args.
+  **
+  public bool init(int io)
+  {
+    channel := EspIo.doAllocateCh(io, id)
+
+    return EspIo.doSetMode( channel, EspIo.UIO_MODE_RESIST ) >= 0
+  }
+
+
+  **
+  ** Read the EspIo value.  Returns 0 or 1 according to physical EspIo value, or -1 
+  ** if doRead returns error.  Returns inverted EspIo value if invert==true. 
+  **
+  public float read()
+  {
+    float val = EspIo.doRead( channel )
+    return val
+  }
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // Fields
+  //////////////////////////////////////////////////////////////////////////
+
+  bool isInit = false
+
+}
+

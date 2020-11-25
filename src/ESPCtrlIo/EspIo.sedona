@@ -1,0 +1,55 @@
+//
+// Copyright (c) 2007 Tridium, Inc
+// All Rights Reserved.
+//
+// History:
+//   19 Nov 07  Elizabeth McKenney   creation
+//
+
+**
+** EspIo models a general purpose digital I/O
+**
+class EspIo
+{
+
+  define int UIO_MODE_BO      = 0x01 << 6
+  define int UIO_MODE_BI      = 0x01 << 5
+  define int UIO_MODE_AO      = 0x01 << 4
+  define int UIO_MODE_RESIST  = 0x01 << 3
+  define int UIO_MODE_CURRENT = 0x01 << 2
+  define int UIO_MODE_BIGV    = 0x01 << 1
+  define int UIO_MODE_SMALLV  = 0x01 << 0
+
+  //////////////////////////////////////////////////////////////////////////
+  // Native methods
+  //////////////////////////////////////////////////////////////////////////
+
+  **
+  ** Allocate Channel.
+  **
+  native static int doAllocateCh(int whichChan, int objectId)
+
+  **
+  ** Release Channel.
+  **
+  native static int doFreeCh(int whichChan)
+
+  **
+  ** Initialize the EspIo based on current values of the config properties.
+  **
+  native static int doSetMode(int whichChan, int mode)
+
+  **
+  ** Read the EspIo value.  Returns 0 or 1 according to physical EspIo value, or
+  **   -1 if whichChan is out of range.
+  **
+  native static float doRead(int whichChan)
+
+  **
+  ** Write bValue to the EspIo.  Returns 0 if successful, or -1 if whichChan is 
+  ** out of range.
+  **
+  native static int doWrite(int whichChan, float bValue)
+
+}
+

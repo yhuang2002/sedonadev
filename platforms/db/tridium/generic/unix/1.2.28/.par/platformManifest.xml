@@ -17,9 +17,7 @@
   <nativeKit depend="datetimeStd 1.0+" />
   <nativeKit depend="platUnix 1.0+" />
   <nativeKit depend="rpiDigitalIo 1.0+" />
-  <nativeKit depend="BACnet 1.0+" />
-  <nativeKit depend="i2c 1.0+" />
-  <nativeKit depend="mqttNew 1.0+" />
+  <nativeKit depend="ESPCtrlIo 1.0+" />
 
   <nativeMethod qname="sys::Sys.platformType" id="0::0" />
   <nativeMethod qname="sys::Sys.copy" id="0::1" />
@@ -104,47 +102,11 @@
   <nativeMethod qname="datetimeStd::DateTimeServiceStd.doNow" id="9::0" />
   <nativeMethod qname="datetimeStd::DateTimeServiceStd.doSetClock" id="9::1" />
   <nativeMethod qname="datetimeStd::DateTimeServiceStd.doGetUtcOffset" id="9::2" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetInit" id="85::0" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetInitStatus" id="85::1" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetBOValueStatus" id="85::2" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetBOPriorityStatus" id="85::3" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetBOOverrideStatus" id="85::4" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetBOValueUpdate" id="85::5" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetBOOverrideInst" id="85::6" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAOValueStatus" id="85::7" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAOPriorityStatus" id="85::8" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAOOverrideStatus" id="85::9" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAOValueUpdate" id="85::10" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAOOverrideInst" id="85::11" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAVValueStatus" id="85::12" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAVPriorityStatus" id="85::13" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAVOverrideStatus" id="85::14" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAVValueUpdate" id="85::15" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAVOverrideInst" id="85::16" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetSendPort" id="85::17" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetSendDeviceID" id="85::18" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetBOObjectIdUpdate" id="85::19" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetBOObjectIdBkp" id="85::20" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAOObjectIdUpdate" id="85::21" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAOObjectIdBkp" id="85::22" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAVObjectIdUpdate" id="85::23" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAVObjectIdBkp" id="85::24" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAVNullStatus" id="85::25" />
-  <nativeMethod qname="BACnet::BACnetDev.doBacnetAVNullInst" id="85::26" />
-  <nativeMethod qname="i2c::I2cDev.doI2cInit" id="86::0" />
-  <nativeMethod qname="i2c::I2cDev.doI2cExit" id="86::1" />
-  <nativeMethod qname="i2c::I2cDev.doI2cRead" id="86::2" />
-  <nativeMethod qname="i2c::I2cDev.doI2cWrite" id="86::3" />
-  <nativeMethod qname="i2c::I2cDev.doI2cSensorReadEnStatus" id="86::4" />
-  <nativeMethod qname="mqttNew::MqttNew.doMqttNewInit_pub" id="96::0" />
-  <nativeMethod qname="mqttNew::MqttNew.doMqttNewPublisherInt" id="96::1" />
-  <nativeMethod qname="mqttNew::MqttNew.doMqttNewPublisherMsg" id="96::2" />
-  <nativeMethod qname="mqttNew::MqttNew.doMqttNewNetworkStatus_Pub" id="96::3" />
-  <nativeMethod qname="mqttNew::MqttNew.doMqttNewInit_sub" id="96::4" />
-  <nativeMethod qname="mqttNew::MqttNew.doMqttNewSubscriberInt" id="96::5" />
-  <nativeMethod qname="mqttNew::MqttNew.doMqttNewSubscriberMsg" id="96::6" />
-  <nativeMethod qname="mqttNew::MqttNew.doMqttNewNetworkStatus_Sub" id="96::7" />
-  <nativeMethod qname="mqttNew::MqttNew.doMqttNewRead_Topic" id="96::8" />
+  <nativeMethod qname="ESPCtrlIo::EspIo.doAllocateCh" id="101::0" />
+  <nativeMethod qname="ESPCtrlIo::EspIo.doFreeCh" id="101::1" />
+  <nativeMethod qname="ESPCtrlIo::EspIo.doSetMode" id="101::2" />
+  <nativeMethod qname="ESPCtrlIo::EspIo.doRead" id="101::3" />
+  <nativeMethod qname="ESPCtrlIo::EspIo.doWrite" id="101::4" />
 </natives>
 
 <manifestIncludes>

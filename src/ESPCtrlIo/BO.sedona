@@ -1,0 +1,126 @@
+**
+** BO models a binary output point
+**
+//@niagaraIcon="module://icons/x16/io.png"
+class BO
+  extends Component    
+{
+
+  //////////////////////////////////////////////////////////////////////////
+  // Properties
+  //////////////////////////////////////////////////////////////////////////
+
+  ** Which physical EspIo this corresponds to
+  @min=0
+  @max=11
+  @defaultOnClone
+  @config property int  channel = -1           // -1 is uninpBitialized/inpBvalid
+
+  ** Whether the value will be inverted before writinpBg to hardware;
+  ** defaults to false (not inverted).
+  @config property bool invert = false   
+
+  ** Value to be written to the hardware output
+  property bool inpB = null
+
+  @summary
+  @config
+  property bool enable
+
+  //////////////////////////////////////////////////////////////////////////
+  // Component methods
+  //////////////////////////////////////////////////////////////////////////
+
+  **
+  ** inpBitialize the component
+  **
+  virtual override void start()
+  {
+    if (state == 0) {
+      channel := EspIo.doAllocateCh(channel, id)
+	  Sys.out.print("BO: channel is $channel\n")
+	  state = 1;
+    }
+    // Don't touch hardware until inpBput value is valid
+    if ( !Sys.app.isSteadyState() || (inpB==null) ) 
+      return                     
+
+    // If init succeeds, set state true
+    state = init( channel, inpB )
+
+    return
+  }
+
+  virtual override void stop()
+  {
+	 EspIo.doFreeCh(channel)
+  }
+
+  **
+  ** Write current value of inpB to the EspIo output
+  **
+  virtual override void execute()
+  {
+    // If not yet inpBitialized, do that first
+    if (state == 2)
+      write(inpB) 
+    else 
+      start()
+    return
+  }
+
+
+  **
+  ** Respond as needed to changes inpB property values.
+  ** 
+  override void changed(Slot slot)
+  {
+    super.changed(slot)
+
+    // Don't respond to prop changes while app is loadinpBg
+    if (!Sys.app.isRunning()) return
+
+    // If EspIo# changes, force re-init 
+    if (slot == BO.channel)
+      //channel := EspIo.doAllocateCh(channel, id)
+      state = 0
+  }
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // Public EspIo methods
+  //////////////////////////////////////////////////////////////////////////
+
+  **
+  ** inpBitializes the EspIo as an output, with inpBitial value bValue.
+  ** Returns true on success, false on failure.
+  **
+  int init(int io, bool bValue)
+  {
+    // init the value before we set EspIo as output
+    channel := EspIo.doAllocateCh(io, id)
+
+    EspIo.doSetMode( io, EspIo.UIO_MODE_BO )
+	
+	return 2;
+  }
+
+
+  **
+  ** Writes bValue to the EspIo, or inpBverse of bValue if invert==true.
+  ** Returns true on success, false on failure.
+  **
+  void write(bool bValue)
+  {
+    EspIo.doWrite( channel, (invert ^ bValue)?1f:0f )
+  }
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // Fields
+  //////////////////////////////////////////////////////////////////////////
+
+  int state = 0
+
+}
+

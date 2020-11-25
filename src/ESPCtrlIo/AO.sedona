@@ -1,0 +1,127 @@
+**
+** AO models an analog output point
+**
+//@niagaraIcon="module://icons/x16/io.png"
+final class AO
+  extends Component    
+{
+
+  //////////////////////////////////////////////////////////////////////////
+  // Properties
+  //////////////////////////////////////////////////////////////////////////
+
+  ** Which physical EspIo this corresponds to
+  @min=0
+  @max=5
+  @defaultOnClone
+  @config property int  channel = -1           // -1 is uninitialized/invalid  
+
+  ** Last known value of the hardware input
+  property float inpF = null
+
+  @summary
+  @config
+  property bool enable
+
+  //////////////////////////////////////////////////////////////////////////
+  // Component methods
+  //////////////////////////////////////////////////////////////////////////
+
+  **
+  ** Initialize the component
+  **
+  virtual override void start()
+  {
+    if (state == 0) {
+      channel := EspIo.doAllocateCh(channel, id)
+	  Sys.out.print("AO: channel is $channel\n")
+	  state = 1;
+    }
+
+    // Don't touch hardware until input value is valid
+    if ( !Sys.app.isSteadyState() || (inpF==null) ) 
+      return                     
+
+    // If init succeeds, set state true
+    state = init( channel, inpF)
+
+    return
+  }
+
+  virtual override void stop()
+  {
+     Sys.out.print("mbing to stop id: $id\n")
+	 EspIo.doFreeCh(channel)
+  }
+
+  **
+  ** Read the EspIo and update value of out.
+  **
+  virtual override void execute()
+  {
+    // If not yet initialized, do that first
+    if (!state) 
+    {
+      start()
+      return
+    }
+
+    write(inpF) 
+
+    return
+  }
+
+
+  **
+  ** Respond as needed to changes in property values.
+  ** 
+  override void changed(Slot slot)
+  {
+    super.changed(slot)
+
+    // Don't respond to prop changes while app is loading
+    if (!Sys.app.isRunning()) return
+
+    // If EspIo# changes, re-init the EspIo
+    if (slot == AO.channel) {
+	  //channel := EspIo.doAllocateCh(channel, id)
+      state = 0
+	}
+  }
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // Public EspIo methods
+  //////////////////////////////////////////////////////////////////////////
+
+  **
+  ** Initialize the EspIo input based on arg values.  Sets config properties to args.
+  **
+  public int init(int io, float inpF)
+  {
+    channel := EspIo.doAllocateCh(io, id)
+
+    EspIo.doSetMode( channel, EspIo.UIO_MODE_AO )
+	
+	return 2
+  }
+
+
+  **
+  ** Writes fValue to the EspIo, or inpF.
+  ** Returns true on success, false on failure.
+  **
+  void write(float fValue)
+  {
+    EspIo.doWrite( channel, fValue )
+  }
+
+
+  //////////////////////////////////////////////////////////////////////////
+  // Fields
+  //////////////////////////////////////////////////////////////////////////
+
+  int state = 0
+
+}
+

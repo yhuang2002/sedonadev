@@ -3,4 +3,5 @@ manifests/
 temp
 lib/*
 kits
-
+bin/svm
+src/sedona/src/version.txt

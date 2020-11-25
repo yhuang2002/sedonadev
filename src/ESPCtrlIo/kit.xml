@@ -1,0 +1,29 @@
+<!--
+  -  Sedona Kit
+  -  Copyright 2013 Tridium Inc, All Rights Reserved.
+  -->
+
+<sedonaKit
+ name = "ESPCtrlIo"
+ vendor = "ESP"
+ description = "Support for ESP32 base Controller I/O"
+ includeSource = "true"
+ doc = "true"
+>
+
+  <!-- Dependencies -->
+  <depend on="sys 1.2" />
+
+  <!-- Source Directories -->
+  <source dir="."/>
+
+  <!-- Natives -->
+  <native qname="ESPCtrlIo::EspIo.doAllocateCh"           id="101::0" />
+  <native qname="ESPCtrlIo::EspIo.doFreeCh"               id="101::1" />  
+  <native qname="ESPCtrlIo::EspIo.doSetMode"              id="101::2" />
+  <native qname="ESPCtrlIo::EspIo.doRead"                 id="101::3" />
+  <native qname="ESPCtrlIo::EspIo.doWrite"                id="101::4" />
+
+
+</sedonaKit>
+
