@@ -16,7 +16,6 @@
   <nativeKit depend="inet 1.0+" />
   <nativeKit depend="datetimeStd 1.0+" />
   <nativeKit depend="platUnix 1.0+" />
-  <nativeKit depend="rpiDigitalIo 1.0+" />
   <nativeKit depend="ESPCtrlIo 1.0+" />
 
   <nativeMethod qname="sys::Sys.platformType" id="0::0" />
@@ -96,9 +95,6 @@
   <nativeMethod qname="inet::UdpSocket.idealPacketSize" id="2::14" />
   <nativeMethod qname="inet::Crypto.sha1" id="2::15" />
   <nativeMethod qname="inet::UdpSocket.join" id="2::16" />
-  <nativeMethod qname="rpiDigitalIo::Dio.doInit" id="4::0" />
-  <nativeMethod qname="rpiDigitalIo::Dio.doRead" id="4::1" />
-  <nativeMethod qname="rpiDigitalIo::Dio.doWrite" id="4::2" />
   <nativeMethod qname="datetimeStd::DateTimeServiceStd.doNow" id="9::0" />
   <nativeMethod qname="datetimeStd::DateTimeServiceStd.doSetClock" id="9::1" />
   <nativeMethod qname="datetimeStd::DateTimeServiceStd.doGetUtcOffset" id="9::2" />

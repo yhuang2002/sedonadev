@@ -13,7 +13,6 @@
     <nativeKit depend="inet 1.0+"   />
     <nativeKit depend="datetimeStd 1.0+" />
     <nativeKit depend="platUnix 1.0+" />
-    <nativeKit depend="rpiDigitalIo 1.0+" />
     <nativeKit depend="ESPCtrlIo 1.0+" />
  
     <!-- Sources -->
@@ -25,7 +24,6 @@
     <nativeSource path="/src/inet/native/std" />
     <nativeSource path="/src/inet/native/sha1" />
     <nativeSource path="/src/datetimeStd/native/std" />
-    <nativeSource path="/src/rpiDigitalIo/native" />
     <nativeSource path="/src/ESPCtrlIo/native" />
 
   </compile>    

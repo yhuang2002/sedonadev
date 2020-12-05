@@ -62,7 +62,7 @@ class AI
       return
     }
 
-    float rc = read()
+    outF = read()
 
     return
   }
@@ -96,7 +96,7 @@ class AI
   {
     channel := EspIo.doAllocateCh(io, id)
 
-    return EspIo.doSetMode( channel, EspIo.UIO_MODE_RESIST ) >= 0
+    return EspIo.doSetMode( channel, EspIo.UIO_MODE_BIGV ) >= 0
   }
 
 

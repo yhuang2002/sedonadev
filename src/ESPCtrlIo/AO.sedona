@@ -16,6 +16,8 @@ final class AO
   @defaultOnClone
   @config property int  channel = -1           // -1 is uninitialized/invalid  
 
+  @min=0
+  @max=10
   ** Last known value of the hardware input
   property float inpF = null
 
@@ -60,7 +62,7 @@ final class AO
   virtual override void execute()
   {
     // If not yet initialized, do that first
-    if (!state) 
+    if (state != 2)
     {
       start()
       return
