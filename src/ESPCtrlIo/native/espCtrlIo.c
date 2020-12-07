@@ -1,13 +1,3 @@
-//
-// Copyright 2013 Tridium, Inc. All Rights Reserved.
-//
-// History:
-//   18 Jan 13 Elizabeth McKenney  Adapted from jenDigitalIo
-//                                 Heavy plagiarizing from elinux.org/RPi_Low-level_peripherals
-//
-//   28 March 2016 Gilberto Villani Brito Adapted to work in RPi2 (gilbertovb@gmail.com)
-//
-
 #include "sedona.h"
 
 #include <stdio.h>

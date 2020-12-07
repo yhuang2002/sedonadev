@@ -35,7 +35,7 @@
   <depend on="BACnet 1.2" />
   <depend on="i2c 1.2" />
   <depend on="ESPCtrlIo 1.2" />
-
+  <depend on="ESPPubSub 1.2" />
 
 </sedonaCode>
 

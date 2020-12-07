@@ -17,6 +17,7 @@
   <nativeKit depend="datetimeStd 1.0+" />
   <nativeKit depend="platUnix 1.0+" />
   <nativeKit depend="ESPCtrlIo 1.0+" />
+  <nativeKit depend="ESPPubSub 1.0+" />
 
   <nativeMethod qname="sys::Sys.platformType" id="0::0" />
   <nativeMethod qname="sys::Sys.copy" id="0::1" />
@@ -98,11 +99,17 @@
   <nativeMethod qname="datetimeStd::DateTimeServiceStd.doNow" id="9::0" />
   <nativeMethod qname="datetimeStd::DateTimeServiceStd.doSetClock" id="9::1" />
   <nativeMethod qname="datetimeStd::DateTimeServiceStd.doGetUtcOffset" id="9::2" />
-  <nativeMethod qname="ESPCtrlIo::EspIo.doAllocateCh" id="101::0" />
-  <nativeMethod qname="ESPCtrlIo::EspIo.doFreeCh" id="101::1" />
-  <nativeMethod qname="ESPCtrlIo::EspIo.doSetMode" id="101::2" />
-  <nativeMethod qname="ESPCtrlIo::EspIo.doRead" id="101::3" />
-  <nativeMethod qname="ESPCtrlIo::EspIo.doWrite" id="101::4" />
+  <nativeMethod qname="ESPCtrlIo::EspIo.doAllocateCh" id="11::0" />
+  <nativeMethod qname="ESPCtrlIo::EspIo.doFreeCh" id="11::1" />
+  <nativeMethod qname="ESPCtrlIo::EspIo.doSetMode" id="11::2" />
+  <nativeMethod qname="ESPCtrlIo::EspIo.doRead" id="11::3" />
+  <nativeMethod qname="ESPCtrlIo::EspIo.doWrite" id="11::4" />
+  <nativeMethod qname="ESPPubSub::EspPubSub.doEspPublishMsg" id="12::0" />
+  <nativeMethod qname="ESPPubSub::EspPubSub.doEspPublishInit" id="12::1" />
+  <nativeMethod qname="ESPPubSub::EspPubSub.doEspPublishDeinit" id="12::2" />
+  <nativeMethod qname="ESPPubSub::EspPubSub.doEspSubscrib" id="12::3" />
+  <nativeMethod qname="ESPPubSub::EspPubSub.doEspUnsubscrib" id="12::4" />
+  <nativeMethod qname="ESPPubSub::EspPubSub.doEspSubscribRead" id="12::5" />
 </natives>
 
 <manifestIncludes>

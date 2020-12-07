@@ -36,6 +36,7 @@
   <target name="i2c" />
   <target name="mqttNew" />
   <target name="ESPCtrlIo" />
+  <target name="ESPPubSub" />
 
 </sedonaDir>
 

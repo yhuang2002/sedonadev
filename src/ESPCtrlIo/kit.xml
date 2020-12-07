@@ -18,11 +18,11 @@
   <source dir="."/>
 
   <!-- Natives -->
-  <native qname="ESPCtrlIo::EspIo.doAllocateCh"           id="101::0" />
-  <native qname="ESPCtrlIo::EspIo.doFreeCh"               id="101::1" />  
-  <native qname="ESPCtrlIo::EspIo.doSetMode"              id="101::2" />
-  <native qname="ESPCtrlIo::EspIo.doRead"                 id="101::3" />
-  <native qname="ESPCtrlIo::EspIo.doWrite"                id="101::4" />
+  <native qname="ESPCtrlIo::EspIo.doAllocateCh"           id="11::0" />
+  <native qname="ESPCtrlIo::EspIo.doFreeCh"               id="11::1" />  
+  <native qname="ESPCtrlIo::EspIo.doSetMode"              id="11::2" />
+  <native qname="ESPCtrlIo::EspIo.doRead"                 id="11::3" />
+  <native qname="ESPCtrlIo::EspIo.doWrite"                id="11::4" />
 
 
 </sedonaKit>

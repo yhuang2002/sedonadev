@@ -1,0 +1,30 @@
+<!--
+  -  Sedona Kit
+  -  Copyright 2013 Tridium Inc, All Rights Reserved.
+  -->
+
+<sedonaKit
+ name = "ESPPubSub"
+ vendor = "ESP"
+ description = "Support PubSub on ESP32 base Controller"
+ includeSource = "true"
+ doc = "true"
+>
+
+  <!-- Dependencies -->
+  <depend on="sys 1.2" />
+
+  <!-- Source Directories -->
+  <source dir="."/>
+
+  <!-- Natives -->
+  <native qname="ESPPubSub::EspPubSub.doEspPublishMsg"           id="12::0" />
+  <native qname="ESPPubSub::EspPubSub.doEspPublishInit"          id="12::1" />
+  <native qname="ESPPubSub::EspPubSub.doEspPublishDeinit"        id="12::2" />
+  <native qname="ESPPubSub::EspPubSub.doEspSubscrib"             id="12::3" />
+  <native qname="ESPPubSub::EspPubSub.doEspUnsubscrib"           id="12::4" />
+  <native qname="ESPPubSub::EspPubSub.doEspSubscribRead"         id="12::5" />
+
+
+</sedonaKit>
+
