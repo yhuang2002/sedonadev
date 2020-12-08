@@ -1,0 +1,68 @@
+//@niagaraIcon="module://icons/x16/io.png"
+class Sub
+  extends Component    
+{
+  @defaultOnClone
+  @config @asStr property Buf(64) Topic
+  //@config @asStr property Buf(16) QOS
+  @config @readonly property int Sub_ID = -1
+
+  @readonly property bool asBool = null
+  @readonly property int asInt
+  @readonly property float asFloat = null
+
+  define Log log
+  virtual override void stop()
+  {
+    if (Sub_ID != -1) PubSub.doUnsubscribe(Sub_ID);
+    Sub_ID := -1;
+	log.message("MQTT Publisher app is stopped!\n")
+  }
+
+  virtual override void start()
+  {
+	// Don't touch hardware until input value is valid
+	if ( !Sys.app.isSteadyState() ) 
+		return
+
+    if (Sub_ID != -1) PubSub.doUnsubscribe(Sub_ID);
+    Sub_ID := -1;
+	Str topicS = Topic.toStr();
+	if (topicS.length() > 0) {
+	  Sub_ID := PubSub.doSubscribe(topicS);
+      state = 1
+    }
+  }
+
+  override void changed(Slot slot)
+  {
+	super.changed(slot)
+	// Don't respond to prop changes while app is loading
+	if (!Sys.app.isRunning()) return
+
+    // If topic changes, re-init the Sub
+    if (slot == Sub.Topic) {
+      state = 0
+    }
+  }
+
+  virtual override void execute()
+  {
+    // If not yet initialized, do that first
+    if (state <= 0)
+    {
+      start()
+      return
+    }
+    float val = PubSub.doSubscribeRead(Sub_ID)
+    if (val != value) {
+      value = val;
+      asBool := (value==0.0)?false:true
+      asInt := (int)value;
+      asFloat := value
+    }
+  }
+
+  float value = null
+  int state = 0
+}

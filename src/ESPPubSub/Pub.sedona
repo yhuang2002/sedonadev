@@ -1,10 +1,9 @@
 //@niagaraIcon="module://icons/x16/io.png"
-class EspPub
+class Pub
   extends Component    
 {
   @defaultOnClone
   @config @asStr property Buf(64) Topic
-  @config @asStr property Buf(64) Payload
   //@config @asStr property Buf(16) QOS
   @config property bool Enable = false
   @config @readonly property int Pub_ID = -1
@@ -16,7 +15,7 @@ class EspPub
   define Log log
   virtual override void stop()
   {
-    if (Pub_ID != -1) EspPubSub.doEspPublishDeinit(Pub_ID);
+    if (Pub_ID != -1) PubSub.doPublishDeinit(Pub_ID);
     Pub_ID := -1;
 	log.message("MQTT Publisher app is stopped!\n")
   }
@@ -27,11 +26,11 @@ class EspPub
 	if ( !Sys.app.isSteadyState() ) 
 		return
 
-    if (Pub_ID != -1) EspPubSub.doEspPublishDeinit(Pub_ID);
+    if (Pub_ID != -1) PubSub.doPublishDeinit(Pub_ID);
     Pub_ID := -1;
 	Str topicS = Topic.toStr();
 	if (topicS.length() > 0) {
-	  Pub_ID := EspPubSub.doEspPublishInit(topicS);
+	  Pub_ID := PubSub.doPublishInit(topicS);
       state = 1
     }
   }
@@ -42,14 +41,14 @@ class EspPub
 	// Don't respond to prop changes while app is loading
 	if (!Sys.app.isRunning()) return
 
-    // If topic changes, re-init the EspPub
-    if (slot == EspPub.Topic) {
+    // If topic changes, re-init the Pub
+    if (slot == Pub.Topic) {
       state = 0
-	} else if (slot == EspPub.asBool) {
+	} else if (slot == Pub.asBool) {
       pubType = 1
-    } else if (slot == EspPub.asInt) {
+    } else if (slot == Pub.asInt) {
       pubType = 2
-    } else if (slot == EspPub.asFloat) {
+    } else if (slot == Pub.asFloat) {
       pubType = 3
     }
   }
@@ -89,7 +88,7 @@ class EspPub
       pubType = 0;
       if (val != value) {
         value = val;
-        EspPubSub.doEspPublishMsg(Pub_ID, value)
+        PubSub.doPublishMsg(Pub_ID, value)
       }
     }
   }

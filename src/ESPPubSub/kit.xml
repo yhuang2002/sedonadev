@@ -18,12 +18,12 @@
   <source dir="."/>
 
   <!-- Natives -->
-  <native qname="ESPPubSub::EspPubSub.doEspPublishMsg"           id="12::0" />
-  <native qname="ESPPubSub::EspPubSub.doEspPublishInit"          id="12::1" />
-  <native qname="ESPPubSub::EspPubSub.doEspPublishDeinit"        id="12::2" />
-  <native qname="ESPPubSub::EspPubSub.doEspSubscrib"             id="12::3" />
-  <native qname="ESPPubSub::EspPubSub.doEspUnsubscrib"           id="12::4" />
-  <native qname="ESPPubSub::EspPubSub.doEspSubscribRead"         id="12::5" />
+  <native qname="ESPPubSub::PubSub.doPublishMsg"           id="12::0" />
+  <native qname="ESPPubSub::PubSub.doPublishInit"          id="12::1" />
+  <native qname="ESPPubSub::PubSub.doPublishDeinit"        id="12::2" />
+  <native qname="ESPPubSub::PubSub.doSubscribe"             id="12::3" />
+  <native qname="ESPPubSub::PubSub.doUnsubscribe"           id="12::4" />
+  <native qname="ESPPubSub::PubSub.doSubscribeRead"         id="12::5" />
 
 
 </sedonaKit>

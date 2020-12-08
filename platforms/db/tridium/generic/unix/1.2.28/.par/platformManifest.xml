@@ -104,12 +104,12 @@
   <nativeMethod qname="ESPCtrlIo::EspIo.doSetMode" id="11::2" />
   <nativeMethod qname="ESPCtrlIo::EspIo.doRead" id="11::3" />
   <nativeMethod qname="ESPCtrlIo::EspIo.doWrite" id="11::4" />
-  <nativeMethod qname="ESPPubSub::EspPubSub.doEspPublishMsg" id="12::0" />
-  <nativeMethod qname="ESPPubSub::EspPubSub.doEspPublishInit" id="12::1" />
-  <nativeMethod qname="ESPPubSub::EspPubSub.doEspPublishDeinit" id="12::2" />
-  <nativeMethod qname="ESPPubSub::EspPubSub.doEspSubscrib" id="12::3" />
-  <nativeMethod qname="ESPPubSub::EspPubSub.doEspUnsubscrib" id="12::4" />
-  <nativeMethod qname="ESPPubSub::EspPubSub.doEspSubscribRead" id="12::5" />
+  <nativeMethod qname="ESPPubSub::PubSub.doPublishMsg" id="12::0" />
+  <nativeMethod qname="ESPPubSub::PubSub.doPublishInit" id="12::1" />
+  <nativeMethod qname="ESPPubSub::PubSub.doPublishDeinit" id="12::2" />
+  <nativeMethod qname="ESPPubSub::PubSub.doSubscribe" id="12::3" />
+  <nativeMethod qname="ESPPubSub::PubSub.doUnsubscribe" id="12::4" />
+  <nativeMethod qname="ESPPubSub::PubSub.doSubscribeRead" id="12::5" />
 </natives>
 
 <manifestIncludes>
