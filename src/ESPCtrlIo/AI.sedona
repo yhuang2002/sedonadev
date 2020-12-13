@@ -11,7 +11,7 @@ class AI
   //////////////////////////////////////////////////////////////////////////
 
   ** Which physical EspIo this corresponds to
-  @min=0
+  @min=8
   @max=11
   @defaultOnClone
   @config property int  channel = -1           // -1 is uninitialized/invalid
