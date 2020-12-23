@@ -1,0 +1,27 @@
+<sedonaKit
+ name = "ESPBacnet"
+ vendor = "ESP"
+ description = "Support for ESP32 base Controller Bacnet Client"
+ includeSource = "true"
+ doc = "true"
+>
+
+  <!-- Dependencies -->
+  <depend on="sys 1.2" />
+
+  <!-- Source Directories -->
+  <source dir="."/>
+
+  <!-- Natives -->
+  <native qname="ESPBacnet::BacnetStack.doGenericInit"           id="13::0" />
+  <native qname="ESPBacnet::BacnetStack.doGenericDeinit"         id="13::1" />
+  <native qname="ESPBacnet::BacnetStack.doBinaryInit"            id="13::2" />
+  <native qname="ESPBacnet::BacnetStack.doBinaryDeinit"          id="13::3" />
+  <native qname="ESPBacnet::BacnetStack.doAnalogInit"            id="13::4" />
+  <native qname="ESPBacnet::BacnetStack.doAnalogDeinit"          id="13::5" />
+  <native qname="ESPBacnet::BacnetStack.doMultiStateInit"        id="13::6" />
+  <native qname="ESPBacnet::BacnetStack.doMultiStateDeinit"      id="13::7" />
+
+
+
+</sedonaKit>

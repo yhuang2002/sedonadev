@@ -15,6 +15,7 @@
     <nativeKit depend="platUnix 1.0+" />
     <nativeKit depend="ESPCtrlIo 1.0+" />
     <nativeKit depend="ESPPubSub 1.0+" />
+    <nativeKit depend="ESPBacnet 1.0+" />
  
     <!-- Sources -->
     <nativeSource path="/src/vm" />
@@ -27,6 +28,7 @@
     <nativeSource path="/src/datetimeStd/native/std" />
     <nativeSource path="/src/ESPCtrlIo/native" />
     <nativeSource path="/src/ESPPubSub/native" />
+    <nativeSource path="/src/ESPBacnet/native" />
 
   </compile>    
   

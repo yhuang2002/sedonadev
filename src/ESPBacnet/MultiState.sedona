@@ -1,0 +1,59 @@
+//@niagaraIcon="module://icons/x16/io.png"
+class MultiState
+  extends Component    
+{
+  @defaultOnClone
+  @config property byte mstpAddr
+  @config property int objId = 0
+  @config property int objType = -1
+
+  define int NotOp = 0
+  define int Success = 1
+  define int Fail = 2
+  define Str OpStatus = "NotOp, Success, Fail"
+  @range=OpStatus
+  @readonly property byte status = NotOp
+
+  property short present
+  property byte numState
+
+  define Log log
+  virtual override void stop()
+  {
+    if (pointer != 0) BacnetStack.doMultiStateDeinit(pointer);
+    pointer = 0;
+	log.message("MQTT MultiStatelisher app is stopped!\n")
+  }
+
+  virtual override void start()
+  {
+	// Don't touch hardware until input value is valid
+	if ( !Sys.app.isSteadyState() ) 
+		return
+
+    if (pointer != 0) BacnetStack.doMultiStateDeinit(pointer);
+    pointer = 0;
+	pointer = BacnetStack.doMultiStateInit(mstpAddr, objId);
+  }
+
+  override void changed(Slot slot)
+  {
+	super.changed(slot)
+	// Don't respond to prop changes while app is loading
+	if (!Sys.app.isRunning()) return
+
+    // If topic changes, re-init the MultiState
+    if (slot == MultiState.present) {
+
+    }
+  }
+
+  virtual override void execute()
+  {
+
+  }
+
+  float value = null
+  int pointer = 0
+  int MultiStateType = 0
+}

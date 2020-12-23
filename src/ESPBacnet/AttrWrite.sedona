@@ -1,0 +1,62 @@
+//@niagaraIcon="module://icons/x16/io.png"
+class AttrWrite
+  extends Component    
+{
+  @defaultOnClone
+  @config property byte mstpAddr
+  @config property int objId = 0
+  @config property int attrId = 0
+
+  define int NotOp = 0
+  define int Success = 1
+  define int Fail = 2
+  define Str OpStatus = "NotOp, Success, Fail"
+  @range=OpStatus
+  @readonly property byte status = NotOp
+
+  property byte dataType = 0
+
+  @readonly property bool asBool = null
+  @readonly property int asInt
+  @readonly property float asFloat = null
+
+  define Log log
+  virtual override void stop()
+  {
+    if (pointer != 0) BacnetStack.doGenericDeinit(pointer);
+    pointer = 0;
+	log.message("MQTT AttrWritelisher app is stopped!\n")
+  }
+
+  virtual override void start()
+  {
+	// Don't touch hardware until input value is valid
+	if ( !Sys.app.isSteadyState() ) 
+		return
+
+    if (pointer != 0) BacnetStack.doGenericDeinit(pointer);
+    pointer = 0;
+	pointer = BacnetStack.doGenericInit(mstpAddr, objId, attrId);
+  }
+
+  override void changed(Slot slot)
+  {
+	super.changed(slot)
+	// Don't respond to prop changes while app is loading
+	if (!Sys.app.isRunning()) return
+
+    // If topic changes, re-init the AttrWrite
+    if (slot == AttrWrite.asBool) {
+
+    }
+  }
+
+  virtual override void execute()
+  {
+
+  }
+
+  float value = null
+  int pointer = 0
+  int AttrWriteType = 0
+}

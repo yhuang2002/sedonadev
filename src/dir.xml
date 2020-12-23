@@ -37,6 +37,7 @@
   <target name="mqttNew" />
   <target name="ESPCtrlIo" />
   <target name="ESPPubSub" />
+  <target name="ESPBacnet" />
 
 </sedonaDir>
 

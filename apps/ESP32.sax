@@ -12,7 +12,6 @@
   <kit name="math" checksum="c22b255c" />
   <kit name="platUnix" checksum="751711ab" />
   <kit name="pstore" checksum="7ea2cb06" />
-  <kit name="rpiDigitalIo" checksum="b1afa98d" />
   <kit name="sox" checksum="397a84dd" />
   <kit name="timing" checksum="aeaac82a" />
   <kit name="types" checksum="10936551" />
