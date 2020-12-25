@@ -5,24 +5,25 @@ class Analog
   @defaultOnClone
   @config property byte mstpAddr
   @config property int objId = 0
-  @config property int objType = -1
 
-  define int NotOp = 0
+  define int Unknown = 0
   define int Success = 1
   define int Fail = 2
-  define Str OpStatus = "NotOp, Success, Fail"
+  define Str OpStatus = "Unknown, Success, Fail"
   @range=OpStatus
-  @readonly property byte status = NotOp
+  @readonly property byte status = Unknown
 
   property float present
   property short units
 
+  define int PROP_PRESENT_VALUE = 85
+  define int PROP_UNITS = 117
   define Log log
   virtual override void stop()
   {
-    if (pointer != 0) BacnetStack.doAnalogDeinit(pointer);
+    if (pointer != 0) BacnetStack.doObjectDeinit(pointer);
     pointer = 0;
-	log.message("MQTT Analoglisher app is stopped!\n")
+	log.message("MQTT AttrReadlisher app is stopped!\n")
   }
 
   virtual override void start()
@@ -30,10 +31,31 @@ class Analog
 	// Don't touch hardware until input value is valid
 	if ( !Sys.app.isSteadyState() ) 
 		return
+    if (state == 0)
+    {
+      if (pointer != 0) BacnetStack.doObjectDeinit(pointer)
+      pointer = 0
+	  pointer = BacnetStack.doObjectInit(mstpAddr, objId)
+      state = 1
+    }
 
-    if (pointer != 0) BacnetStack.doAnalogDeinit(pointer);
-    pointer = 0;
-	pointer = BacnetStack.doAnalogInit(mstpAddr, objId);
+    if (state == 1)
+    {
+      BacnetStack.doPropSetup(pointer, PROP_PRESENT_VALUE);
+      BacnetStack.doPropSetup(pointer, PROP_UNITS);
+      state = 2
+    }
+
+    if (state == 2)
+    {
+      int checkedStatus = BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE);
+      checkedStatus = BacnetStack.doPropCheck(pointer, PROP_UNITS);
+      if (checkedStatus == 0)
+      {
+        state = 3
+        status := Success
+      }
+    }
   }
 
   override void changed(Slot slot)
@@ -42,18 +64,27 @@ class Analog
 	// Don't respond to prop changes while app is loading
 	if (!Sys.app.isRunning()) return
 
-    // If topic changes, re-init the Analog
-    if (slot == Analog.present) {
-
+    // If topic changes, re-init the AttrRead
+    if ((slot == AttrRead.mstpAddr) ||
+        (slot == AttrRead.objId)) {
+      state = 0
+      status := Unknown
     }
   }
 
   virtual override void execute()
   {
-
+    // If not yet initialized, do that first
+    if (state <= 2)
+    {
+      start()
+      return
+    }
+    units := (short)BacnetStack.doPropRead(pointer, PROP_UNITS)
+    present := BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE)
   }
 
+  int state = 0
   float value = null
   int pointer = 0
-  int AnalogType = 0
 }

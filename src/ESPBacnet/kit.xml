@@ -13,15 +13,11 @@
   <source dir="."/>
 
   <!-- Natives -->
-  <native qname="ESPBacnet::BacnetStack.doGenericInit"           id="13::0" />
-  <native qname="ESPBacnet::BacnetStack.doGenericDeinit"         id="13::1" />
-  <native qname="ESPBacnet::BacnetStack.doBinaryInit"            id="13::2" />
-  <native qname="ESPBacnet::BacnetStack.doBinaryDeinit"          id="13::3" />
-  <native qname="ESPBacnet::BacnetStack.doAnalogInit"            id="13::4" />
-  <native qname="ESPBacnet::BacnetStack.doAnalogDeinit"          id="13::5" />
-  <native qname="ESPBacnet::BacnetStack.doMultiStateInit"        id="13::6" />
-  <native qname="ESPBacnet::BacnetStack.doMultiStateDeinit"      id="13::7" />
-
-
+  <native qname="ESPBacnet::BacnetStack.doObjectInit"            id="13::0" />
+  <native qname="ESPBacnet::BacnetStack.doObjectDeinit"          id="13::1" />
+  <native qname="ESPBacnet::BacnetStack.doPropSetup"             id="13::2" />
+  <native qname="ESPBacnet::BacnetStack.doPropCheck"             id="13::3" />
+  <native qname="ESPBacnet::BacnetStack.doPropRead"              id="13::4" />
+  <native qname="ESPBacnet::BacnetStack.doPropWrite"             id="13::5" />
 
 </sedonaKit>

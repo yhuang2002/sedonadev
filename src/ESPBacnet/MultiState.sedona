@@ -5,24 +5,25 @@ class MultiState
   @defaultOnClone
   @config property byte mstpAddr
   @config property int objId = 0
-  @config property int objType = -1
 
-  define int NotOp = 0
+  define int Unknown = 0
   define int Success = 1
   define int Fail = 2
-  define Str OpStatus = "NotOp, Success, Fail"
+  define Str OpStatus = "Unknown, Success, Fail"
   @range=OpStatus
-  @readonly property byte status = NotOp
+  @readonly property byte status = Unknown
 
   property short present
   property byte numState
 
+  define int PROP_PRESENT_VALUE = 85
+  define int PROP_NUMBER_OF_STATES = 74
   define Log log
   virtual override void stop()
   {
-    if (pointer != 0) BacnetStack.doMultiStateDeinit(pointer);
+    if (pointer != 0) BacnetStack.doObjectDeinit(pointer);
     pointer = 0;
-	log.message("MQTT MultiStatelisher app is stopped!\n")
+	log.message("MQTT AttrReadlisher app is stopped!\n")
   }
 
   virtual override void start()
@@ -30,10 +31,31 @@ class MultiState
 	// Don't touch hardware until input value is valid
 	if ( !Sys.app.isSteadyState() ) 
 		return
+    if (state == 0)
+    {
+      if (pointer != 0) BacnetStack.doObjectDeinit(pointer)
+      pointer = 0
+	  pointer = BacnetStack.doObjectInit(mstpAddr, objId)
+      state = 1
+    }
 
-    if (pointer != 0) BacnetStack.doMultiStateDeinit(pointer);
-    pointer = 0;
-	pointer = BacnetStack.doMultiStateInit(mstpAddr, objId);
+    if (state == 1)
+    {
+      BacnetStack.doPropSetup(pointer, PROP_PRESENT_VALUE);
+      BacnetStack.doPropSetup(pointer, PROP_NUMBER_OF_STATES);
+      state = 2
+    }
+
+    if (state == 2)
+    {
+      int checkedStatus = BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE);
+      checkedStatus = BacnetStack.doPropCheck(pointer, PROP_NUMBER_OF_STATES);
+      if (checkedStatus == 0)
+      {
+        state = 3
+        status := Success
+      }
+    }
   }
 
   override void changed(Slot slot)
@@ -42,18 +64,26 @@ class MultiState
 	// Don't respond to prop changes while app is loading
 	if (!Sys.app.isRunning()) return
 
-    // If topic changes, re-init the MultiState
-    if (slot == MultiState.present) {
-
+    // If topic changes, re-init the AttrRead
+    if ((slot == AttrRead.mstpAddr) ||
+        (slot == AttrRead.objId)) {
+      state = 0
+      status := Unknown
     }
   }
 
   virtual override void execute()
   {
-
+    // If not yet initialized, do that first
+    if (state <= 2)
+    {
+      start()
+      return
+    }
+    numState := (byte)BacnetStack.doPropRead(pointer, PROP_NUMBER_OF_STATES)
+    present := (short)BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE)
   }
 
-  float value = null
+  int state = 0
   int pointer = 0
-  int MultiStateType = 0
 }

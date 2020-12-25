@@ -5,24 +5,25 @@ class Binary
   @defaultOnClone
   @config property byte mstpAddr
   @config property int objId = 0
-  @config property int objType = -1
 
-  define int NotOp = 0
+  define int Unknown = 0
   define int Success = 1
   define int Fail = 2
-  define Str OpStatus = "NotOp, Success, Fail"
+  define Str OpStatus = "Unknown, Success, Fail"
   @range=OpStatus
-  @readonly property byte status = NotOp
+  @readonly property byte status = Unknown
 
   property bool present = null
   property bool polarity = null
 
+  define int PROP_PRESENT_VALUE = 85
+  define int PROP_STATE_POLARITY = 117
   define Log log
   virtual override void stop()
   {
-    if (pointer != 0) BacnetStack.doBinaryDeinit(pointer);
+    if (pointer != 0) BacnetStack.doObjectDeinit(pointer);
     pointer = 0;
-	log.message("MQTT Binarylisher app is stopped!\n")
+	log.message("MQTT AttrReadlisher app is stopped!\n")
   }
 
   virtual override void start()
@@ -30,10 +31,31 @@ class Binary
 	// Don't touch hardware until input value is valid
 	if ( !Sys.app.isSteadyState() ) 
 		return
+    if (state == 0)
+    {
+      if (pointer != 0) BacnetStack.doObjectDeinit(pointer)
+      pointer = 0
+	  pointer = BacnetStack.doObjectInit(mstpAddr, objId)
+      state = 1
+    }
 
-    if (pointer != 0) BacnetStack.doBinaryDeinit(pointer);
-    pointer = 0;
-	pointer = BacnetStack.doBinaryInit(mstpAddr, objId);
+    if (state == 1)
+    {
+      BacnetStack.doPropSetup(pointer, PROP_PRESENT_VALUE);
+      BacnetStack.doPropSetup(pointer, PROP_STATE_POLARITY);
+      state = 2
+    }
+
+    if (state == 2)
+    {
+      int checkedStatus = BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE);
+      checkedStatus = BacnetStack.doPropCheck(pointer, PROP_STATE_POLARITY);
+      if (checkedStatus == 0)
+      {
+        state = 3
+        status := Success
+      }
+    }
   }
 
   override void changed(Slot slot)
@@ -42,18 +64,27 @@ class Binary
 	// Don't respond to prop changes while app is loading
 	if (!Sys.app.isRunning()) return
 
-    // If topic changes, re-init the Binary
-    if (slot == Binary.present) {
-
+    // If topic changes, re-init the AttrRead
+    if ((slot == AttrRead.mstpAddr) ||
+        (slot == AttrRead.objId)) {
+      state = 0
+      status := Unknown
     }
   }
 
   virtual override void execute()
   {
-
+    // If not yet initialized, do that first
+    if (state <= 2)
+    {
+      start()
+      return
+    }
+    polarity := (BacnetStack.doPropRead(pointer, PROP_STATE_POLARITY) == 0.0)?false:true
+    present := (BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE) == 0.0)?false:true
   }
 
-  float value = null
+  int state = 0
   int pointer = 0
   int BinaryType = 0
 }

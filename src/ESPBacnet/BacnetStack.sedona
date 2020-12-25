@@ -4,28 +4,11 @@ class BacnetStack
 // Native methods for Generic
 //////////////////////////////////////////////////////////////////////////
 
-native static int doGenericInit(int mstpAddr, int ObjectId, int attributeId)
-native static int doGenericDeinit(int pointer)
-
-//////////////////////////////////////////////////////////////////////////
-// Native methods for Binary
-//////////////////////////////////////////////////////////////////////////
-
-native static int doBinaryInit(int mstpAddr, int ObjectId)
-native static int doBinaryDeinit(int pointer)
-
-//////////////////////////////////////////////////////////////////////////
-// Native methods for Analog
-//////////////////////////////////////////////////////////////////////////
-
-native static int doAnalogInit(int mstpAddr, int ObjectId)
-native static int doAnalogDeinit(int pointer)
-
-//////////////////////////////////////////////////////////////////////////
-// Native methods for MultiState
-//////////////////////////////////////////////////////////////////////////
-
-native static int doMultiStateInit(int mstpAddr, int ObjectId)
-native static int doMultiStateDeinit(int pointer)
+native static int doObjectInit(int mstpAddr, int ObjectId)
+native static int doObjectDeinit(int pointer)
+native static int doPropSetup(int pointer, int attributeId)
+native static int doPropCheck(int pointer, int attributeId)
+native static float doPropRead(int pointer, int attributeId)
+native static int doPropWrite(int pointer, int attributeId, float value)
 
 }

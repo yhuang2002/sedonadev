@@ -7,14 +7,12 @@ class AttrWrite
   @config property int objId = 0
   @config property int attrId = 0
 
-  define int NotOp = 0
+  define int Unknown = 0
   define int Success = 1
   define int Fail = 2
-  define Str OpStatus = "NotOp, Success, Fail"
+  define Str OpStatus = "Unknown, Success, Fail"
   @range=OpStatus
-  @readonly property byte status = NotOp
-
-  property byte dataType = 0
+  @readonly property byte status = Unknown
 
   @readonly property bool asBool = null
   @readonly property int asInt
@@ -23,7 +21,7 @@ class AttrWrite
   define Log log
   virtual override void stop()
   {
-    if (pointer != 0) BacnetStack.doGenericDeinit(pointer);
+    if (pointer != 0) BacnetStack.doObjectDeinit(pointer);
     pointer = 0;
 	log.message("MQTT AttrWritelisher app is stopped!\n")
   }
@@ -33,10 +31,29 @@ class AttrWrite
 	// Don't touch hardware until input value is valid
 	if ( !Sys.app.isSteadyState() ) 
 		return
+    if (state == 0)
+    {
+      if (pointer != 0) BacnetStack.doObjectDeinit(pointer)
+      pointer = 0
+	  pointer = BacnetStack.doObjectInit(mstpAddr, objId)
+      state = 1
+    }
 
-    if (pointer != 0) BacnetStack.doGenericDeinit(pointer);
-    pointer = 0;
-	pointer = BacnetStack.doGenericInit(mstpAddr, objId, attrId);
+    if (state == 1)
+    {
+      BacnetStack.doPropSetup(pointer, attrId);
+      state = 2
+    }
+
+    if (state == 2)
+    {
+      int checkedStatus = BacnetStack.doPropCheck(pointer, attrId);
+      if (checkedStatus == 0)
+      {
+        state = 3
+        status := Success
+      }
+    }
   }
 
   override void changed(Slot slot)
@@ -45,18 +62,33 @@ class AttrWrite
 	// Don't respond to prop changes while app is loading
 	if (!Sys.app.isRunning()) return
 
-    // If topic changes, re-init the AttrWrite
-    if (slot == AttrWrite.asBool) {
-
+    // If topic changes, re-init the AttrRead
+    if ((slot == AttrRead.mstpAddr) ||
+        (slot == AttrRead.objId)) {
+      state = 0
+      status := Unknown
+    } else if (slot == AttrRead.attrId) {
+      state = 1
+      status := Unknown
     }
   }
 
   virtual override void execute()
   {
-
+    // If not yet initialized, do that first
+    if (state <= 2)
+    {
+      start()
+      return
+    }
+    value = BacnetStack.doPropRead(pointer, attrId)
+    asFloat := value
+    asBool := (value == 0.0)?false:true
+    asInt := (int)value
   }
 
+  int state = 0
   float value = null
   int pointer = 0
-  int AttrWriteType = 0
+  int AttrReadType = 0
 }

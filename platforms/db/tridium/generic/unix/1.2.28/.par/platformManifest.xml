@@ -111,14 +111,12 @@
   <nativeMethod qname="ESPPubSub::PubSub.doSubscribe" id="12::3" />
   <nativeMethod qname="ESPPubSub::PubSub.doUnsubscribe" id="12::4" />
   <nativeMethod qname="ESPPubSub::PubSub.doSubscribeRead" id="12::5" />
-  <nativeMethod qname="ESPBacnet::BacnetStack.doGenericInit" id="13::0" />
-  <nativeMethod qname="ESPBacnet::BacnetStack.doGenericDeinit" id="13::1" />
-  <nativeMethod qname="ESPBacnet::BacnetStack.doBinaryInit" id="13::2" />
-  <nativeMethod qname="ESPBacnet::BacnetStack.doBinaryDeinit" id="13::3" />
-  <nativeMethod qname="ESPBacnet::BacnetStack.doAnalogInit" id="13::4" />
-  <nativeMethod qname="ESPBacnet::BacnetStack.doAnalogDeinit" id="13::5" />
-  <nativeMethod qname="ESPBacnet::BacnetStack.doMultiStateInit" id="13::6" />
-  <nativeMethod qname="ESPBacnet::BacnetStack.doMultiStateDeinit" id="13::7" />
+  <nativeMethod qname="ESPBacnet::BacnetStack.doObjectInit" id="13::0" />
+  <nativeMethod qname="ESPBacnet::BacnetStack.doObjectDeinit" id="13::1" />
+  <nativeMethod qname="ESPBacnet::BacnetStack.doPropSetup" id="13::2" />
+  <nativeMethod qname="ESPBacnet::BacnetStack.doPropCheck" id="13::3" />
+  <nativeMethod qname="ESPBacnet::BacnetStack.doPropRead" id="13::4" />
+  <nativeMethod qname="ESPBacnet::BacnetStack.doPropWrite" id="13::5" />
 </natives>
 
 <manifestIncludes>

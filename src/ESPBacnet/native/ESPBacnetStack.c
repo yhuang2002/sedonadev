@@ -9,8 +9,8 @@
 
 /*****************************************************************************/
 
-// int doGenericInit(int mstpAddr, int ObjectId, int attributeId)
-Cell ESPBacnet_BacnetStack_doGenericInit(SedonaVM* vm, Cell* params) {
+// int doObjectInit(int mstpAddr, int ObjectId, int attributeId)
+Cell ESPBacnet_BacnetStack_doObjectInit(SedonaVM* vm, Cell* params) {
   int mstpAddr = params[0].ival;
   int objectId = params[1].aval;
   int attrId = params[2].aval;
@@ -18,54 +18,42 @@ Cell ESPBacnet_BacnetStack_doGenericInit(SedonaVM* vm, Cell* params) {
   return zeroCell;
 }
 
-// int doGenericDeinit(int pointer)
-Cell ESPBacnet_BacnetStack_doGenericDeinit(SedonaVM* vm, Cell* params) {
+// int doObjectDeinit(int pointer)
+Cell ESPBacnet_BacnetStack_doObjectDeinit(SedonaVM* vm, Cell* params) {
   void *pointer = params[0].ival;
 
   return zeroCell;
 }
 
-// int doBinaryInit(int mstpAddr, int ObjectId)
-Cell ESPBacnet_BacnetStack_doBinaryInit(SedonaVM* vm, Cell* params) {
-  int mstpAddr = params[0].ival;
-  int objectId = params[1].aval;
-
-  return zeroCell;
-}
-
-// int doBinaryDeinit(int pointer)
-Cell ESPBacnet_BacnetStack_doBinaryDeinit(SedonaVM* vm, Cell* params) {
+// int doPropSetup(int pointer, int attributeId)
+Cell ESPBacnet_BacnetStack_doPropSetup(SedonaVM* vm, Cell* params) {
   void *pointer = params[0].ival;
+  int attrId = params[1].aval;
 
   return zeroCell;
 }
 
-// int doAnalogInit(int mstpAddr, int ObjectId)
-Cell ESPBacnet_BacnetStack_doAnalogInit(SedonaVM* vm, Cell* params) {
-  int mstpAddr = params[0].ival;
-  int objectId = params[1].aval;
-
-  return zeroCell;
-}
-
-// int doAnalogDeinit(int pointer)
-Cell ESPBacnet_BacnetStack_doAnalogDeinit(SedonaVM* vm, Cell* params) {
+// int doPropCheck(int pointer, int attributeId)
+Cell ESPBacnet_BacnetStack_doPropCheck(SedonaVM* vm, Cell* params) {
   void *pointer = params[0].ival;
+  int attrId = params[1].aval;
 
   return zeroCell;
 }
 
-// int doMultiStateInit(int mstpAddr, int ObjectId)
-Cell ESPBacnet_BacnetStack_doMultiStateInit(SedonaVM* vm, Cell* params) {
-  int mstpAddr = params[0].ival;
-  int objectId = params[1].aval;
-
-  return zeroCell;
-}
-
-// int doMultiStateDeinit(int pointer)
-Cell ESPBacnet_BacnetStack_doMultiStateDeinit(SedonaVM* vm, Cell* params) {
+// float doPropRead(int pointer, int attributeId)
+Cell ESPBacnet_BacnetStack_doPropRead(SedonaVM* vm, Cell* params) {
   void *pointer = params[0].ival;
+  int attrId = params[1].aval;
+
+  return zeroCell;
+}
+
+// int doPropWrite(int pointer, int attributeId, float value)
+Cell ESPBacnet_BacnetStack_doPropWrite(SedonaVM* vm, Cell* params) {
+  void *pointer = params[0].ival;
+  int attrId = params[1].aval;
+  float value = params[2].fval;
 
   return zeroCell;
 }
