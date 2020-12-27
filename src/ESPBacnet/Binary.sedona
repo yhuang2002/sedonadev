@@ -14,10 +14,10 @@ class Binary
   @readonly property byte status = Unknown
 
   property bool present = null
-  property bool polarity = null
+  @readonly property bool polarity = null
 
   define int PROP_PRESENT_VALUE = 85
-  define int PROP_STATE_POLARITY = 117
+  define int PROP_POLARITY = 84
   define Log log
   virtual override void stop()
   {
@@ -42,18 +42,23 @@ class Binary
     if (state == 1)
     {
       BacnetStack.doPropSetup(pointer, PROP_PRESENT_VALUE);
-      BacnetStack.doPropSetup(pointer, PROP_STATE_POLARITY);
+      BacnetStack.doPropSetup(pointer, PROP_POLARITY);
       state = 2
     }
 
     if (state == 2)
     {
-      int checkedStatus = BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE);
-      checkedStatus = BacnetStack.doPropCheck(pointer, PROP_STATE_POLARITY);
-      if (checkedStatus == 0)
-      {
-        state = 3
-        status := Success
+      if (BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE) == 0) {
+        float val = BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE)
+        if (val != value) {
+          value = val
+          present := (value==0.0)?false:true
+        }
+        if (BacnetStack.doPropCheck(pointer, PROP_POLARITY) == 0)
+        {
+          state = 3
+          status := Success
+        }
       }
     }
   }
@@ -80,11 +85,24 @@ class Binary
       start()
       return
     }
-    polarity := (BacnetStack.doPropRead(pointer, PROP_STATE_POLARITY) == 0.0)?false:true
-    present := (BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE) == 0.0)?false:true
+    polarity := (BacnetStack.doPropRead(pointer, PROP_POLARITY) == 0.0)?false:true
+    float val = present?1.0:0.0
+    if (val != value) {
+      if (BacnetStack.doPropWrite(pointer, PROP_PRESENT_VALUE, val) == 0) {
+        value = val;
+      }
+    }
+    if (BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE) == 0) {
+      val = BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE)
+      if (val != value) {
+        value = val
+        present := (value==0.0)?false:true
+      }
+    }
+
   }
 
   int state = 0
+  float value = null
   int pointer = 0
-  int BinaryType = 0
 }

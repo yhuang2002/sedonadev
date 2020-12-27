@@ -14,7 +14,7 @@ class Analog
   @readonly property byte status = Unknown
 
   property float present
-  property short units
+  @readonly property short units
 
   define int PROP_PRESENT_VALUE = 85
   define int PROP_UNITS = 117
@@ -48,12 +48,18 @@ class Analog
 
     if (state == 2)
     {
-      int checkedStatus = BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE);
-      checkedStatus = BacnetStack.doPropCheck(pointer, PROP_UNITS);
-      if (checkedStatus == 0)
-      {
-        state = 3
-        status := Success
+      if (BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE) == 0)
+	  {
+        float val = BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE)
+        if (val != value) {
+          value = val
+          present := value
+        }
+		if (BacnetStack.doPropCheck(pointer, PROP_UNITS)== 0)
+        {
+          state = 3
+          status := Success
+        }
       }
     }
   }
@@ -81,7 +87,19 @@ class Analog
       return
     }
     units := (short)BacnetStack.doPropRead(pointer, PROP_UNITS)
-    present := BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE)
+    //present := BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE)
+    if (present != value) {
+      if (BacnetStack.doPropWrite(pointer, PROP_PRESENT_VALUE, present) == 0) {
+        value = present;
+      }
+    }
+    if (BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE) == 0) {
+      float val = BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE)
+      if (val != value) {
+        value = val
+        present := value
+      }
+    }
   }
 
   int state = 0

@@ -14,7 +14,7 @@ class MultiState
   @readonly property byte status = Unknown
 
   property short present
-  property byte numState
+  @readonly property byte numState
 
   define int PROP_PRESENT_VALUE = 85
   define int PROP_NUMBER_OF_STATES = 74
@@ -48,12 +48,17 @@ class MultiState
 
     if (state == 2)
     {
-      int checkedStatus = BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE);
-      checkedStatus = BacnetStack.doPropCheck(pointer, PROP_NUMBER_OF_STATES);
-      if (checkedStatus == 0)
-      {
-        state = 3
-        status := Success
+      if (BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE) == 0) {
+        float val = BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE)
+        if (val != value) {
+          value = val
+          present := (short)value
+        }
+        if (BacnetStack.doPropCheck(pointer, PROP_NUMBER_OF_STATES) == 0)
+        {
+          state = 3
+          status := Success
+        }
       }
     }
   }
@@ -81,9 +86,22 @@ class MultiState
       return
     }
     numState := (byte)BacnetStack.doPropRead(pointer, PROP_NUMBER_OF_STATES)
-    present := (short)BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE)
+    float val = (float)present
+    if (val != value) {
+      if (BacnetStack.doPropWrite(pointer, PROP_PRESENT_VALUE, val) == 0) {
+        value = val;
+      }
+    }
+    if (BacnetStack.doPropCheck(pointer, PROP_PRESENT_VALUE) == 0) {
+      val = BacnetStack.doPropRead(pointer, PROP_PRESENT_VALUE)
+      if (val != value) {
+        value = val
+        present := (short)value
+      }
+    }
   }
 
   int state = 0
+  float value = null
   int pointer = 0
 }

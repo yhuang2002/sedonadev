@@ -14,9 +14,9 @@ class AttrWrite
   @range=OpStatus
   @readonly property byte status = Unknown
 
-  @readonly property bool asBool = null
-  @readonly property int asInt
-  @readonly property float asFloat = null
+  property bool asBool = null
+  property int asInt
+  property float asFloat = null
 
   define Log log
   virtual override void stop()
@@ -51,6 +51,7 @@ class AttrWrite
       if (checkedStatus == 0)
       {
         state = 3
+        writeType = 0
         status := Success
       }
     }
@@ -70,6 +71,12 @@ class AttrWrite
     } else if (slot == AttrRead.attrId) {
       state = 1
       status := Unknown
+    } else if (slot == AttrWrite.asBool) {
+      writeType = 1
+    } else if (slot == AttrWrite.asInt) {
+      writeType = 2
+    } else if (slot == AttrWrite.asFloat) {
+      writeType = 3
     }
   }
 
@@ -81,14 +88,50 @@ class AttrWrite
       start()
       return
     }
-    value = BacnetStack.doPropRead(pointer, attrId)
-    asFloat := value
-    asBool := (value == 0.0)?false:true
-    asInt := (int)value
+    if (writeType > 0) {
+      float val = 0.0;
+      if (writeType == 1) {
+        val = asBool?1.0:0.0
+		asInt := (int)val
+		asFloat := val
+      } else if (writeType == 2) {
+        val = (float)asInt
+        if (val == 0.0) {
+          asBool := false
+        } else {
+          asBool := true
+        }
+        asFloat := val;
+      } else if (writeType == 3) {
+        val = asFloat;
+        if (val == 0.0) {
+          asBool := false
+        } else {
+          asBool := true
+        }
+        asInt := (int)val
+      }
+
+      if (val != value) {
+        if (BacnetStack.doPropWrite(pointer, attrId, val) == 0) {
+          writeType = 0;
+          value = val;
+        }
+      }
+    }
+    if (BacnetStack.doPropCheck(pointer, attrId) == 0) {
+      float val = BacnetStack.doPropRead(pointer, attrId)
+      if (val != value) {
+        value = val
+        asFloat := value
+        asBool := (value == 0.0)?false:true
+        asInt := (int)value
+      }
+    }
   }
 
   int state = 0
   float value = null
   int pointer = 0
-  int AttrReadType = 0
+  int writeType = 0
 }
